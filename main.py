@@ -4,7 +4,7 @@ from flask import Flask
 from telethon import TelegramClient, events
 
 # --- SERVIDOR FLASK PARA ENGAÑAR A RENDER Y QUE SIGA GRATIS ---
-app = Flask(name)
+app = Flask(__name__)
 
 @app.route('/')
 def home():
