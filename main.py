@@ -38,7 +38,7 @@ CUEVANA_SOURCES = [
 # ----------------------------------------------------
 @bot.on(events.NewMessage(pattern=r'^/start$'))
 async def start_handler(event):
-    menu = (
+    await event.respond(
         "👋 ¡Bienvenido al Bot de Streaming!\n\n"
         "🎬 **Películas (/pl):**\n"
         "• /pl cine <nombre>\n\n"
@@ -48,7 +48,6 @@ async def start_handler(event):
         "• /am E01 <nombre> (Episodio)\n"
         "• /am cine <nombre> (Película)"
     )
-    await event.respond(menu)
 
 # ----------------------------------------------------
 # COMANDO /am (AnimeFLV)
@@ -60,7 +59,6 @@ async def anime_handler(event):
         await event.respond("⚠️ Uso correcto:\n/am E01 <nombre>\n/am cine <nombre>")
         return
 
-    # Extraer formato y nombre
     match_ep = re.match(r'^(E\d+)\s+(.+)$', raw_text, re.IGNORECASE)
     match_cine = re.match(r'^(cine)\s+(.+)$', raw_text, re.IGNORECASE)
 
@@ -78,11 +76,7 @@ async def anime_handler(event):
     query_encoded = urllib.parse.quote(anime_name)
     search_url = f"{ANIMEFLV_BASE}/browse?q={query_encoded}"
 
-    msg = (
-     AnimeFLVimeFLV** — {tipo}\n"
-     Búsqueda:queda:** {anime_name}\n\n"
-        f"🔗 [Hacé clic acá para ver los resultados en AnimeFLV]({search_url})"
-    )
+    msgAnimeFLVimeFLV** — {tiBúsqueda:queda:** {anime_name}\n\n🔗 [Ver resultados en AnimeFLV]({search_url})"
     await event.respond(msg, link_preview=True)
 
 # ----------------------------------------------------
@@ -95,16 +89,12 @@ async def movie_handler(event):
         await event.respond("⚠️ Uso correcto: /pl cine <nombre de la película>")
         return
 
-    # Limpiar prefijo cine si fue ingresado
     movie_name = re.sub(r'^cine\s+', '', raw_text, flags=re.IGNORECASE).strip()
     query_encoded = urllib.parse.quote(movie_name)
 
     links_cuevana = "\n".join([f"• [{src.split('//')[1]}]({src}/?s={query_encoded})" for src in CUEVANA_SOURCES])
 
-    msg = (
-     Película (Cine):Cine):** {movie_name}\n\n"
-        f"Resultados disponibles en fuentes:\n{links_cuevana}"
-    )
+    msgPelícula (Cine):Cine):** {movie_name}\n\nResultados en fuentes:\n{links_cuevana}"
     await event.respond(msg, link_preview=True)
 
 # ----------------------------------------------------
@@ -116,30 +106,26 @@ async def series_handler(event):
     if not raw_text:
         await event.respond("⚠️ Uso correcto: /ss T01E01 <nombre de la serie>")
         return
-AnimeFLV
-Anime Online - AnimeFLV
-Somos la Legendaria AnimeFLV, donde podrás encontrar todos tus animes favoritos para ver online y descargar en una calidad excelente, no olvides recom...
-# Extraer temporada/episodio y título
+
     match_se = re.match(r'^(T\d+E\d+)\s+(.+)$', raw_text, re.IGNORECASE)
     if match_se:
         se_code = match_se.group(1).upper()
         series_name = match_se.group(2)
-        info_ep = f" (Temporada/Episodio: {se_code})"
+        info_ep = f" (Temporada/Ep{se_code}_code}**)"
     else:
         series_name = raw_text
         info_ep = ""
-
-    query_encoded = urllib.parse.quote(series_name)
+AnimeFLV
+Anime Online - AnimeFLV
+Somos la Legendaria AnimeFLV, donde podrás encontrar todos tus animes favoritos para ver online y descargar en una calidad excelente, no olvides recom...
+query_encoded = urllib.parse.quote(series_name)
     links_cuevana = "\n".join([f"• [{src.split('//')[1]}]({src}/?s={query_encoded})" for src in CUEVANA_SOURCES])
 
-    msg = (
-        f"📺 Serie: {series_name}{info_ep}\n\n"
-        f"Buscar en fuentes de Cuevana:\n{links_cuevana}"
-    )
+    msg = f"📺 Serie: {series_name}{info_ep}\n\nBuscar en Cuevana:\n{links_cuevana}"
     await event.respond(msg, link_preview=True)
 
 # ----------------------------------------------------
 # INICIO
 # ----------------------------------------------------
-print("🚀 Bot de Streaming iniciado con soporte para AnimeFLV y Cuevana.")
+print("🚀 Bot listo.")
 bot.run_until_disconnected()
