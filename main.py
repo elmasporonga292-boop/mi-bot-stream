@@ -6,7 +6,7 @@ from flask import Flask
 from telethon import TelegramClient, events
 
 # Servidor web para Render
-app = Flask(name)
+app = Flask(__name__)
 
 @app.route('/')
 def home():
